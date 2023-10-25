@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/css/style.css">
+    <script src="static/js/jquery.js"></script>
+
+    <title>DENEME</title>
+</head>
+
+<body>
+   
+    <h1 id="title">SEDAT SİMAVİ ENDÜSTRİ MESLEK LİSESİ</h1>
+
+    <ul>
+        <li id="d1"><a class="aktif" href="#">HOME</a></li>
+        <li class="menu"><a href="#">MENU 1</a>
+            <ul class="acilir-menu">
+                <li> <a href="#">Muhammed</a></li>
+                <li> <a href="#">Deniz</a></li>
+                <li> <a href="#">Emine</a></li>
+            </ul>
+        </li>
+        <li class="d4"><a href="#">MENU 2</a></li>
+        <li class="menu"><a href="#">MENU 3</a>
+            <ul class="acilir-menu">
+                <li>
+                    <a href="#">DENEME1</a>
+
+                </li>
+                <li>
+                    <a href="#">DENEME2</a>
+
+                </li>
+            </ul>
+        </li>
+        <div></div>
+        <li class="d2"><a href="#">MENU 4</a>
+        </div>
+    </ul>
+    <hr />
+    <div class="Container">
+        <div class="myimgdivshowhide">
+            <img src="static/img/gs.jpg" alt="gs" class="img-responsive img-thumbnail" height="300px" width="450px"/>
+        </div>
+    </div>
+    
+    <script>
+        $("#d1").click(function () {
+            alert("TIKLANDI");
+        });
+    </script>
+       <script>
+        $(document).ready(function(){
+            $('.d2').click(function(){
+                   $('.myimgdivshowhide').toggle();
+            });
+        });
+        </script> 
+    
+</body>
+
+</html>

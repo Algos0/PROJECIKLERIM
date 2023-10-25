@@ -1,0 +1,82 @@
+body
+{
+    background-color: aliceblue;
+}
+.myimgdivshowhide{
+	display:none;
+}
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #111;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 48px;
+    text-decoration: none;
+}
+
+li a:hover, .menu:hover {
+    background-color: #1a3680;
+}
+
+li.menu {
+    display: inline-block;
+}
+
+.acilir-menu {
+    display: none;
+    position: absolute;
+    background-color: #111;
+    min-width: 160px;
+}
+
+
+
+.acilir-menu a {
+    display: block;
+    text-align: center;
+}
+
+.acilir-menu a:hover {
+    color: white;
+}
+
+.menu:hover .acilir-menu {
+    display: block;
+}
+
+.aktif {
+    background-color: #1A3680;
+    color: white;
+}
+#title
+{
+    color: black;
+    text-align: center;
+}
+.Container
+{
+    top: 35px;
+    position: relative;
+    height: 300px;
+    width: 450px;
+    background-color: rgba(0, 255, 255, 0.603);
+    margin: auto;
+}
+hr {
+    margin-top: 140px;
+    width: 80%;
+    border-style: solid;
+    color: cornflowerblue;
+    border-width: 3px;
+}
