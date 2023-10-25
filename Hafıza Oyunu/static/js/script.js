@@ -1,3 +1,4 @@
+// everything is added twice? this could be doubled using code
 // Kart Destesi Görüntüleri Dizisi
 const deckCards = ["img1.png", "img1.png", "img2.png", "img2.png", "img3.png", "img3.png", "img4.png", "img4.png", "img5.png", "img5.png", "img6.png", "img6.png", "img7.png", "img7.png", "img8.png", "img8.png"];
 
@@ -70,6 +71,10 @@ function startGame() {
 	const shuffledDeck = shuffle(deckCards); 
 	// Iterate over deck of cards array
 	for (let i = 0; i < shuffledDeck.length; i++) {
+		// you could use html templates here
+		// most modern frameworks like react js made templates obsolete but they are still good to learn
+		// we use handlebars.js but there are many many other ones you can pick from 
+		
 		// Create the <li> tags
 		const liTag = document.createElement('LI');
 		// Give <li> class of card
@@ -79,9 +84,9 @@ function startGame() {
 		// Append <img> to <li>
 		liTag.appendChild(addImage);
 		// Set the img src path with the shuffled deck
-		addImage.setAttribute("src", "static/img/" + shuffledDeck[i] + "?raw=true");
+		addImage.setAttribute("src", "static/img/" + shuffledDeck[i] + "?raw=true"); // what does raw=true do here?
 		// Add an alt tag to the image
-		addImage.setAttribute("alt", "image of vault boy from fallout");
+		addImage.setAttribute("alt", "image of vault boy from fallout"); // alt is not necessary, but random video game references are fun :P
 		// Update the new <li> to the deck <ul>
 		deck.appendChild(liTag);
 	}
@@ -107,6 +112,10 @@ on the first card click
 Used: https://www.w3schools.com/js/js_timing.asp
 */
 function timer() {
+	/*
+		watch this video to understand why i do not like keeping time this way
+		https://www.youtube.com/watch?v=MCi6AZMkxcU
+	*/
 	// Update the count every 1 second
 	time = setInterval(function() {
 		seconds++;
@@ -114,6 +123,10 @@ function timer() {
 				minutes++;
 				seconds = 0;
 			}
+
+		// here the timer is in a different format than when everything is reset
+		// also look into writing this with backticks as `${minutes} Dakika ${seconds} Saniye`, added in ES6
+		// https://www.w3schools.com/js/js_string_templates.asp
 		// Update the timer in HTML with the time it takes the user to play the game
 		timeCounter.innerHTML = "<i class='fa fa-hourglass-start'></i>" + " Süre: " + minutes + " Dakika " + seconds + " Saniye " ;
 	}, 1000);
@@ -138,6 +151,10 @@ function resetEverything() {
 	timeStart = false;
 	seconds = 0;
 	minutes = 0;
+
+	// as i mentioned above, your time display format is repeated at 3 different locations
+	// and one of them is different than the other two. when something repeats it's usually
+	// best to make sure its all handled by the same variable/function in order to avoid inconsistencies
 	timeCounter.innerHTML = "<i class='fa fa-hourglass-start'></i>" + " Süre: 00:00";
 	// Reset star count and the add the class back to show stars again
 	star[1].firstElementChild.classList.add("fa-star");
@@ -160,6 +177,8 @@ Increment the moves counter.  To be called at each
 comparison for every two cards compared add one to the count
 */
 function movesCounter() {
+	// technically innerHTML is a string, but ++ is a numeric operator
+	// javascript autoconverts to save you here but it's bad practice to rely on that
 	// Update the html for the moves counter
 	movesCount.innerHTML ++;
 	// Keep track of the number of moves for every pair checked
@@ -187,6 +206,10 @@ function starRating() {
 Compare two cards to see if they match or not
 */
 function compareTwo() {
+	/*
+		see my notes on deniz's code to simplify the if/else checks here
+	*/
+
 	// When there are 2 cards in the opened array
 	if (opened.length === 2) {
   		// Disable any further mouse clicks on other cards
@@ -258,6 +281,11 @@ for the end game and update the modal with these stats
 function AddStats() {
 	// Access the modal content div
 	const stats = document.querySelector(".modal-content");
+
+	// every time you add stats you are creating 3 more p elements, but you are never removing them
+	// they are empty elements so they are not visible, but if you finish the game many times in a row
+	// the number of elements in your modal can get very large. this is very small memory leak
+	
 	// Create three different paragraphs
 	for (let i = 1; i <= 3; i++) {
 		// Create a new Paragraph
@@ -290,8 +318,13 @@ const modalClose = document.getElementsByClassName("close")[0];
 	modalClose.onclick = function() {
 		modal.style.display = "none";
 	};
+
+	// what if some other part of the code was listening to clicks on window?
+	// this would remove those when the modal opens
+	// and this code keeps running even after the modal is closed! in fact it runs every time we click anything!
 // When the user clicks anywhere outside of the modal, close it
 	window.onclick = function(event) {
+		console.log("does this need to run now?");
 		if (event.target == modal) {
 			modal.style.display = "none";
 		}
@@ -304,6 +337,9 @@ are 8 pairs 16 cards all together then the game is won.
 Stop the timer update the modal with stats and show the modal
 */
 function winGame() {
+	// i don't like the hardcoded 16 here
+	// what if you later decided to add difficulty levels and changed the game to 5x4, or 3x4
+	// maybe check for something like matched.length === allCards.length
 	if (matched.length === 16) {
 		stopTime();
 		pressedPlaynBtn = false; 
@@ -312,9 +348,15 @@ function winGame() {
 	}
 }
 
+
+
 /*----------------------------------  
 Main Event Listener
 ------------------------------------*/
+/*
+	this main section should have been inside a main() or initialize() function
+	and the function should be called at the end of the script
+*/
 /*
 Event Listener if a card <li> is clicked
 call flipCard()
@@ -395,7 +437,17 @@ function flipAllCards()
 	  }, 3000);
 }
 
-	
+/*
+	this was a good effort but unfortunately this code breaks the game
+	when you Durdur/Surdur once, i think the pointerEvents styles get a bit mixed up
+	because the game then lets the use click on cards continuously and some cards
+	don't flip back and it all turns into a mess. i think the main issue is that
+	the card click prevention mechanism is weak. instead of suppressing pointer events
+	the game should better track its internal state and decide to flip cards or not.
+	however in this case i think the best solution is to remove this code completely,
+	since it doesn't actually make sense to allow user to pause their timer in the
+	middle of a game
+*/
 stopBtn.addEventListener("click", function () {
 	if (stopBtn.classList.contains("continue-btn")) {
 		timer();
@@ -424,4 +476,18 @@ stopBtn.addEventListener("click", function () {
 	console.log("event")
 
   });
+
+
+/*
+	overall this is very good programming. i like that you and deniz collaborated on this
+	but i think collaboration must have stopped at some point because you have bugs that
+	he doesn't, and he has bugs that you don't.
+	other than the stop button not working properly my only negative feedback is that the
+	flip animation is not good enough. the cards shouldn't appear suddenly, nor should they
+	flip more than 180 degrees. also the cards should flip back. i think you and deniz should
+	come together and have another shot at this animation to make it as it should be.
+*/
+
+
+
   
